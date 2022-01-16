@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head><title>trial</title>
+<style>
+			.color-cell {
+				color: white;
+			}
+		</style>
+<script>
+    function checkAnswers(){
+        // The following is what I changed.
+        Student_answer = document.querySelector('[name="clave1"]').value
+        Teacher_answer = "Nike"
+
+        if (Student_answer.length === 0 || Teacher_answer.length === 0) {
+            alert("You must enter an answer to continue...");
+            return false;
+        }
+
+        if (Student_answer === Teacher_answer) {
+            alert("CONGRATULATIONS! Your answer is correct! You have advanced to the next level.");
+            document.body.innerHTML += '<button onclick="window.location.href = \'https://www.google.com\';">Next Riddle</button>'
+            //NOTE: here is where the button should be activated and click on it to advance to an hyperlink 
+        } else {
+            alert("Wrong answer, please, keep trying...");
+            //NOTE: here the button must be disabled
+        }
+
+    }
+  
+    </script>
+</head>
+<body>
+
+If I give you color wheel of 5 most dominant colors from 5 iconic logos, how many can you guess?
+
+<div>
+<h1>Logo 1</h1>
+Colow wheel 1:
+<br>
+<table>
+		<thead>
+			<tr>
+				<th>Source</th>
+				<th width="150">Hovered color</th>
+				<th width="150">Selected color</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					<canvas id="canvas" width="300" height="227"></canvas>
+				</td>
+				<td align="center" class="color-cell" id="hovered-color"></td>
+				<td align="center" class="color-cell" id="selected-color"></td>
+			</tr>
+		</tbody>
+	<table>
+Hint: Footwear Manufacturing Company
+<h3>Write here your answer...</h3>
+    <br>
+
+    <form action="" name="f1" onsubmit >
+      Your answer: <input type="password" name="clave1" size="20">
+      <br>
+      <br>
+      <input type="button" value="Check" onClick="checkAnswers()">
+
+    </form>
+
+</div>
+<script>
+ var img = new Image();
+img.crossOrigin = 'anonymous';
+img.src = 'https://i.postimg.cc/rmRj3SYt/nikecw.png';
+var canvas = document.getElementById('canvas');
+var ctx = canvas.getContext('2d');
+canvas.width = 450;
+canvas.height = 450;
+img.onload = function() {
+  ctx.drawImage(img, -15, -25);
+  img.style.display = 'none';
+};
+var hoveredColor = document.getElementById('hovered-color');
+var selectedColor = document.getElementById('selected-color');
+
+
+function pick(event, destination) {
+  var x = event.layerX;
+  var y = event.layerY;
+  var pixel = ctx.getImageData(x, y, 1, 1);
+  var data = pixel.data;
+
+	const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${data[3] / 255})`;
+	destination.style.background = rgba;
+	destination.textContent = rgba;
+
+	return rgba;
+}
+
+canvas.addEventListener('mousemove', function(event) {
+	pick(event, hoveredColor);
+});
+canvas.addEventListener('click', function(event) {
+	pick(event, selectedColor);
+});
+</script>
+</body>
+
+</html>
